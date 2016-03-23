@@ -1,0 +1,71 @@
+/* custom styles */
+
+.container {
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 780px;
+  padding-top: 50px;
+  width: 90%;
+}
+
+.queryBox {
+  font-size: 36px;
+  border: none;
+  outline: none;
+}
+
+ul {
+  text-align: left;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  padding-bottom: 20px;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.repo-list-stats {
+  float: right;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #888;
+}
+
+.octicon {
+  display: inline-block;
+  fill: currentColor;
+  vertical-align: bottom;
+  margin-left: 8px;
+}
+
+.repo-list-description {
+  max-width: 550px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.count {
+  font-style: italic;
+  padding-bottom: 100px;
+}
+
+::-webkit-input-placeholder, .queryBox {
+  text-decoration: underline;
+}
+
+.titleBar {
+  padding-bottom: 10px;
+}
+
+.tagline {
+  padding-bottom: 40px;
+  font-style: italic;
+  color: #666;
+}

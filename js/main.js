@@ -98,6 +98,7 @@ var TextInput = React.createClass({
 
   render: function () {
     var onChange = function (event) {
+      $('input').resize();
       var value = event.target.value;
       this.setState({ value: value });
       var obj = {};
@@ -180,6 +181,14 @@ var DynamicSearch = React.createClass({
     }
   },
 
+  onChange: function(state){
+    this.handleChange(state);
+  },
+
+  componentWillMount: function(){
+    this.onChange = _.debounce(this.onChange, 300);
+  },
+
   render: function() {
     list = this.state.query ?
       el(List, {
@@ -193,7 +202,8 @@ var DynamicSearch = React.createClass({
           el(TextInput, {
             initialValue: this.state.query,
             name: 'query',
-            onChange: _.debounce(this.handleChange, 300),
+            onChange: this.onChange,
+            componentWillMount: this.componentWillMount,
             placeholder: "x",
             autoFocus: true
           }),
@@ -217,6 +227,7 @@ window.app = ReactDOM.render(
 $(window).on("hashchange", function(e) {
   window.app.setState({query: decodeURIComponent(window.location.hash.substring(1))});
   window.app.handleChange(window.app.state);
+  $("input").resize();
 });
 
-$("input").autoresize();
+$("input").resize();

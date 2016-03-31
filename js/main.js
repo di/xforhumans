@@ -12,13 +12,6 @@ $.fn.resize = function(){
   $(this).css('width', Math.min(maxWidth, Math.max(minWidth, $(this).textWidth())) + padding);
 };
 
-$.fn.autoresize = function(){
-  $(this).on('input', function() {
-    $(this).resize();
-  }).trigger('input');
-  return this;
-};
-
 var el = React.createElement;
 
 var star = el(
@@ -54,6 +47,7 @@ var nbsp = el('span', {dangerouslySetInnerHTML: {__html: '&nbsp'}});
 var item = function (item) {
 
   return el("li", {'key': item._id},
+    el("hr"),
     el("div", {className: 'repo-list-stats'},
         item._source.language,
         star,
@@ -75,12 +69,12 @@ var List = function (props) {
     props.list ? props.list.map(props.template) : null);
 };
 
-var ResultCount =  function(props) {
-  return (
-    el('div', { className: 'count' },
+var ResultCount = function(props) {
+  return props.total_count === null ? el('noscript') : (
+    el('h3', {className: 'count'},
+      "We've found ",
       props.total_count,
-      props.total_count === null ? null :
-        props.total_count == 1 ? ' result' : ' total results'
+      props.total_count == 1 ? ' result' : ' results'
     )
   );
 };
@@ -210,10 +204,12 @@ var DynamicSearch = React.createClass({
           "for humans"
         ),
         el('h4', {className: 'tagline'}, 'Find software for your species'),
-        list,
-        el(ResultCount, {
-          total_count: this.state.total_count,
-        })
+        el('div', {className: 'results'},
+          el(ResultCount, {
+            total_count: this.state.total_count,
+          }),
+          list
+        )
       )
     );
   }

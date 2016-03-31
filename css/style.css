@@ -1,12 +1,25 @@
 /* custom styles */
 
-.container {
+#main {
   text-align: center;
+}
+
+.about {
+  padding-top: 20px;
+  padding-bottom: 100px;
+}
+
+.about p {
+  font-size: 18px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container {
   margin-right: auto;
   margin-left: auto;
   max-width: 780px;
   padding-top: 50px;
-  width: 90%;
 }
 
 .queryBox {
@@ -22,8 +35,6 @@ ul {
 
 li {
   list-style: none;
-  padding-bottom: 20px;
-  width: 90%;
   margin-right: auto;
   margin-left: auto;
 }
@@ -51,9 +62,8 @@ li {
   color: #666;
 }
 
-.count {
-  font-style: italic;
-  padding-bottom: 100px;
+h3.count {
+  font-size: 16px;
 }
 
 ::-webkit-input-placeholder, .queryBox {
@@ -68,4 +78,8 @@ li {
   padding-bottom: 40px;
   font-style: italic;
   color: #666;
+}
+
+.results {
+  text-align: left;
 }

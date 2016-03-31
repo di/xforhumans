@@ -1,14 +1,20 @@
 $.fn.textWidth = function(_text, _font){
-  var fakeEl = $('<span>').hide().appendTo(document.body).text(_text || this.val() || this.text()).css('font', _font || this.css('font')),
-    width = fakeEl.width();
+  var fakeEl = $('<span>').hide().appendTo(document.body).text(_text || this.val() || this.text()).css('font', _font || this.css('font'));
+  var width = fakeEl.width();
   fakeEl.remove();
   return width;
 };
 
-$.fn.autoresize = function(options){
-  options = $.extend({padding:10,minWidth:0,maxWidth:10000}, options||{});
+$.fn.resize = function(){
+  var maxWidth = 10000;
+  var minWidth = 20;
+  var padding = 10;
+  $(this).css('width', Math.min(maxWidth, Math.max(minWidth, $(this).textWidth())) + padding);
+};
+
+$.fn.autoresize = function(){
   $(this).on('input', function() {
-    $(this).css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$(this).textWidth() + options.padding)));
+    $(this).resize();
   }).trigger('input');
   return this;
 };
@@ -103,7 +109,6 @@ var TextInput = React.createClass({
       el("input", {
         type: "text",
         className: 'queryBox',
-        //ref: function (ref) { this.fixFocus(ref) },
         value: this.state.value,
         onChange: onChange,
         placeholder: this.props.placeholder,
@@ -120,7 +125,7 @@ var TextInput = React.createClass({
 var DynamicSearch = React.createClass({
   getInitialState: function(){
     return {
-      query: window.location.hash.substring(1),
+      query: decodeURIComponent(window.location.hash.substring(1)),
       items: null,
       total_count: null
     };
@@ -166,7 +171,7 @@ var DynamicSearch = React.createClass({
   },
 
   handleChange: function(state){
-    window.location.hash = state.query;
+    window.location.hash = encodeURIComponent(state.query);
     if (state.query) {
       this.setState(state);
       this.fetchitem(state.query);
@@ -210,8 +215,8 @@ window.app = ReactDOM.render(
 );
 
 $(window).on("hashchange", function(e) {
-  window.app.setState(app.getInitialState());
+  window.app.setState({query: decodeURIComponent(window.location.hash.substring(1))});
   window.app.handleChange(window.app.state);
 });
 
-$("input").autoresize({minWidth:30,maxWidth:300});
+$("input").autoresize();

@@ -149,7 +149,7 @@ var DynamicSearch = React.createClass({
           query: query,
         }
       },
-      size: 20,
+      size: 10,
     };
     $.ajax({
       type: 'POST',

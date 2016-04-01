@@ -18,8 +18,7 @@
 .container {
   margin-right: auto;
   margin-left: auto;
-  max-width: 780px;
-  padding-top: 50px;
+  max-width: 730px;
 }
 
 .queryBox {
@@ -62,7 +61,7 @@ li {
   color: #666;
 }
 
-h3.count {
+.count h3 {
   font-size: 16px;
 }
 
@@ -71,6 +70,7 @@ h3.count {
 }
 
 .titleBar {
+  padding-top: 50px;
   padding-bottom: 10px;
 }
 

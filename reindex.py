@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+import time
 
 import requests
 from elasticsearch.helpers import bulk
@@ -18,6 +19,7 @@ class Repo(DocType):
     language = String(analyzer='snowball')
     stargazers_count = Integer()
     html_url = String()
+    total_count = Integer()
 
     class Meta:
         index = 'xforhumans'
@@ -31,6 +33,7 @@ class Repo(DocType):
         obj['language'] = json['language']
         obj['stargazers_count'] = json['stargazers_count']
         obj['html_url'] = json['html_url']
+        obj['total_count'] = json['forks_count'] + json['stargazers_count']
         return obj
 
 
@@ -44,20 +47,36 @@ def reindex():
             repo = Repo.from_json(item)
             yield repo.to_dict(include_meta=True)
 
+    def _get_page(page=1):
+        params = {
+            'access_token': os.environ['GH_ACCESS_TOKEN'],
+            'per_page': 100,
+            'q': '"for humans"',
+            'page': page,
+        }
+        resp = requests.get(
+            'https://api.github.com/search/repositories',
+            params=params,
+        )
+        print "Page {}, response: ".format(page, resp)
+        return resp
+
+    def _bulk_update(resp):
+        result = bulk(client, _repos_from_response(resp.json()['items']))
+        print "Bulk: ", result
+
     index.delete(ignore=404)
     index.create()
 
-    params = {
-        'access_token': os.environ['GH_ACCESS_TOKEN'],
-        'per_page': 100,
-        'q': 'for humans',
-    }
-    resp = requests.get(
-        'https://api.github.com/search/repositories',
-        params=params,
-    )
-    print "Response: ", resp
-    print "Bulk: ", bulk(client, _repos_from_response(resp.json()['items']))
+    first_resp = _get_page()
+    _bulk_update(first_resp)
+
+    n_pages = first_resp.json()['total_count']/100 + 1
+
+    for page in range(2, n_pages + 1):
+        time.sleep(1)
+        resp = _get_page(page)
+        _bulk_update(resp)
 
 
 def search(query):

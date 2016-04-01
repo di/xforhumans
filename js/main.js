@@ -44,10 +44,11 @@ var fork = el(
 
 var nbsp = el('span', {dangerouslySetInnerHTML: {__html: '&nbsp'}});
 
+var tagline = el('h4', {className: 'tagline'}, 'Find software for your species.');
+
 var item = function (item) {
 
   return el("li", {'key': item._id},
-    el("hr"),
     el("div", {className: 'repo-list-stats'},
         item._source.language,
         star,
@@ -60,7 +61,8 @@ var item = function (item) {
     el("h3", {},
       el("a", { href: item._source.html_url }, item._source.full_name)
     ),
-    el("p", { className: 'repo-list-description' }, item._source.description)
+    el("p", { className: 'repo-list-description' }, item._source.description),
+    el("hr")
   );
 };
 
@@ -70,13 +72,15 @@ var List = function (props) {
 };
 
 var ResultCount = function(props) {
-  return props.total_count === null ? el('noscript') : (
-    el('h3', {className: 'count'},
-      "We've found ",
-      props.total_count,
-      props.total_count == 1 ? ' result' : ' results'
-    )
-  );
+  return props.total_count === null ? el('noscript') :
+    el('div', {className: 'count'},
+      el('h3', {},
+        "We've found ",
+        props.total_count,
+        props.total_count == 1 ? ' result' : ' results'
+      ),
+      el("hr")
+    );
 };
 
 var TextInput = React.createClass({
@@ -143,6 +147,7 @@ var DynamicSearch = React.createClass({
           query: query,
         }
       },
+      sort: [{'total_count': 'desc'}],
       size: 10,
     };
     $.ajax({
@@ -203,7 +208,7 @@ var DynamicSearch = React.createClass({
           }),
           "for humans"
         ),
-        el('h4', {className: 'tagline'}, 'Find software for your species'),
+        tagline,
         el('div', {className: 'results'},
           el(ResultCount, {
             total_count: this.state.total_count,
@@ -224,6 +229,10 @@ $(window).on("hashchange", function(e) {
   window.app.setState({query: decodeURIComponent(window.location.hash.substring(1))});
   window.app.handleChange(window.app.state);
   $("input").resize();
+});
+
+$("a[href^='#']").on("click", function(e) {
+  $(document).scrollTop(0);
 });
 
 $("input").resize();

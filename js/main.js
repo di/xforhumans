@@ -107,7 +107,6 @@ var TextInput = React.createClass({
     return (
       el("input", {
         type: "text",
-        id: 'queryBox',
         className: 'queryBox',
         value: this.state.value,
         onChange: onChange,
@@ -233,7 +232,6 @@ $(window).on("hashchange", function(e) {
 });
 
 $("a[href^='#']").on("click", function(e) {
-  $('#queryBox').focus();
   $(document).scrollTop(0);
 });
 

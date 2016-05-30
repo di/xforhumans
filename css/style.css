@@ -23,7 +23,7 @@
 
 .queryBox {
   font-size: 36px;
-  border: none;
+  border: 1px solid darkgray;
   outline: none;
 }
 

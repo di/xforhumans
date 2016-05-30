@@ -8,7 +8,7 @@ $.fn.textWidth = function(_text, _font){
 $.fn.resize = function(){
   var maxWidth = 10000;
   var minWidth = 20;
-  var padding = 10;
+  var padding = 4;
   $(this).css('width', Math.min(maxWidth, Math.max(minWidth, $(this).textWidth())) + padding);
 };
 
@@ -206,6 +206,7 @@ var DynamicSearch = React.createClass({
             placeholder: "x",
             autoFocus: true
           }),
+          nbsp,
           "for humans"
         ),
         tagline,

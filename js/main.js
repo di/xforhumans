@@ -44,7 +44,7 @@ var fork = el(
 
 var nbsp = el('span', {dangerouslySetInnerHTML: {__html: '&nbsp'}});
 
-var tagline = el('h4', {className: 'tagline'}, 'Find software for your species.');
+var tagline = el('h4', {className: 'tagline'}, 'Find software for your species.™');
 
 var item = function (item) {
 
